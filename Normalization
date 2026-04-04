@@ -5,59 +5,62 @@
 User view 1
 
 UNF:
-Invoice [InvoiceNo, InvoiceDate, TeamNo, CustNo, CustName, Address, City, Postal code, Subtotal, GST, PST, TotalDue, (EquipUsed, ServiceCode, 
-                                                        ServiceDesc, HourCharge, WorkDuration), Total]
+Invoice [InvoiceNo, InvoiceDate, TeamNo, CustNo, CustName, Address, City, PostalCode, Subtotal, GST, PST, TotalDue, (ServiceCode, ServiceDesc, HourlyCharge, WorkDuration, TotalCharge), (EquipUsed)]
 
 1NF:
-Invoice [InvoiceNo (PK), InvoiceDate, TeamNo, CustNo, CustName, Address, City, Postalcode, Subtotal, GST, PST, Total]
-Services [InvoiceNo (PKFK), ServiceCode(PK), ServiceDesc, HourlyCharge, WorkDuration, TotalCharge]
-Equipments [InvoiceNo(PKFK), EquipUsed(PK)]
+Invoice [InvoiceNo (PK), InvoiceDate, TeamNo, CustNo, CustName, Address, City, PostalCode, Subtotal, GST, PST, TotalDue]
+Services [InvoiceNo (PKFK), ServiceCode (PK), ServiceDesc, HourlyCharge, WorkDuration, TotalCharge]
+Equipments [InvoiceNo (PKFK), EquipUsed (PK)]
 
 2NF:
-Invoice [InvoiceNo (PK), CustNo (FK), InvoiceDate, TeamNo, Subtotal, GST, PST, Total]
-Customer [CustNo (PK), CustName, Address, City, Postalcode]
-Services [InvoiceNo (PKFK), ServiceCode(PK), WorkDuration, TotalCharge]
+Invoice [InvoiceNo (PK), InvoiceDate, TeamNo, CustNo, CustName, Address, City, PostalCode, Subtotal, GST, PST, TotalDue]
+Services [InvoiceNo (PKFK), ServiceCode (PKFK), WorkDuration, TotalCharge]
 ServiceMethod [ServiceCode (PK), ServiceDesc, HourlyCharge]
-Equipments [InvoiceNo(PKFK), EquipUsed(PK)]
+Equipments [InvoiceNo (PKFK), EquipUsed (PK)]
 
-3NF: the same.
+3NF:
+ServiceInvoice [InvoiceNo (PK), CustNo (FK), TeamNo, InvoiceDate, Subtotal, GST, PST, TotalDue]
+Customer [CustNo (PK), CustName, Address, City, PostalCode]
+Services [InvoiceNo (PKFK), ServiceCode (PKFK), WorkDuration, TotalCharge]
+ServiceMethod [ServiceCode (PK), ServiceDesc, HourlyCharge]
+Equipments [InvoiceNo (PKFK), EquipUsed (PK)]
 
 User view 2
 
 UNF:
-EmployeeTeam [TeamNo, TeamDesc, (Position, EmpName, EmpID, OHIP, HomePhone, StartDate, Skills)]
+Team [TeamNo, TeamDesc, (Position, Name, EmpID, OHIP, HomePhone, StartDate, Skills)]
 
 1NF:
 Team [TeamNo(PK), TeamDesc]
-Employees [EmpID (PK), TeamNo (FK), Name, Position, Home Phone, StartDate]
-Skills [EmpID (PK), Skill (PK)]
+Employees [EmpID (PK), TeamNo (FK), Name, Position, OHIP, HomePhone, StartDate]
+Skills [EmpID (PKFK), Skill (PK)]
 
-2NF: 
+2NF:
 Team [TeamNo(PK), TeamDesc]
-Employees [EmpID (PK), TeamNo (FK), Name, Position, Home Phone, StartDate]
-Skills [EmpID (PK), Skill (PK)]
+Employees [EmpID (PK), TeamNo (FK), Name, Position, OHIP, HomePhone, StartDate]
+Skills [EmpID (PKFK), Skill (PK)]
 
 3NF:
 Team [TeamNo(PK), TeamDesc]
-Employees [EmpID (PK), TeamNo (FK), Name, Position, Home Phone, StartDate]
-Skills [EmpID (PK), Skill (PK)]
+Employees [EmpID (PK), TeamNo (FK), Name, Position, OHIP, HomePhone, StartDate]
+Skills [EmpID (PKFK), Skill (PK)]
 
 User view 3
+
 UNF:
-Sales [ProdClass, ProdID, Product, Charge, Qty, InvoiceID, InvoiceDate, SalesAssistant, SalesAssistantName, CustNo]
+Sales [ProdClass, ProdID, Product, Charge, Qty, InvoiceID, InvoiceDate, SalesAssistantID, SalesAssistantName, CustNo]
 
 1NF:
-Sales [ProdClass(PK), ProdID(PK), Product, Charge, Qty, InvoiceID, InvoiceDate, SalesAssistant, SalesAssistantName, CustNo]
+Sales [InvoiceID(PK), ProdID(PK), ProdClass, Product, Charge, Qty, InvoiceDate, SalesAssistantID, SalesAssistantName, CustNo]
 
 2NF:
-Invoice [InvoiceID(PK), invoiceDate, custNo, SalesAssistantID, SalesAssistantName]
-Product[ProdID(PK), ProdClass, ProductName, Charge]
+ProductInvoice [InvoiceID(PK), InvoiceDate, CustNo, SalesAssistantID, SalesAssistantName]
+Product [ProdID(PK), ProdClass, Product, Charge]
 Sales [InvoiceID (PKFK), ProdID(PKFK), Qty]
 
 3NF:
-Invoice [InvoiceID(PK), invoiceDate, custNo]
-SalesAssistant [SalesAssistantID(PK), SalesAssistantName]
-Product[ProdID(PK), ProdClass, ProductName, Charge]
+ProductInvoice [InvoiceID(PK), InvoiceDate, CustNo, SalesAssistantID(FK)]
+Product [ProdID(PK), ProdClass, Product, Charge]
 Sales [InvoiceID (PKFK), ProdID(PKFK), Qty]
 
 User view 4
@@ -69,10 +72,10 @@ Report [ProductClass, Classification, ProductID, Desc, Cost, Markup, Charge]
 Report [ProductID(PK), ProductClass, Classification, Desc, Cost, Markup, Charge]
 
 2NF:
-Report [ProductID(PK), ProductClass, Classification, ProductID, Desc, Cost, Markup, Charge]
+Report [ProductID(PK), ProductClass, Classification, Desc, Cost, Markup, Charge]
 
 3NF:
-Report [ProductID(PK), ProductClass(FK), ProductID, Desc, Cost, Markup, Charge]
+Product [ProductID(PK), ProductClass(FK), Desc, Cost, Markup, Charge]
 ProdClassification [ProductClass(PK), Classification]
 
 User view 5
@@ -87,10 +90,8 @@ Inventory [ProdID(PK), Desc, Inventory, Aisle, Supplier]
 Inventory [ProdID(PK), Desc, Inventory, Aisle, Supplier]
 
 3NF:
-Inventory [ProdID(PK), Desc, Inventory, Aisle, Supplier(FK)]
-Supplier [Supplier(PK)]
-
-
+Product [ProdID(PK), Desc, Inventory, Aisle, SupplierID(FK)]
+Supplier [SupplierID(PK), SupplierName]
 
 I realized there are redundancies. Merging report, product, and inventory together since they have the same primary key of ProdID.
 
@@ -98,18 +99,16 @@ this way, we can just select different columns of product table for views and su
 
 Total:
 
-ServiceInvoice [InvoiceNo (PK), CustNo (FK), InvoiceDate, TeamNo, Subtotal, GST, PST, Total]
-Customer [CustNo (PK), CustName, Address, City, Postalcode]
-Services [InvoiceNo (PKFK), ServiceCode(PK), WorkDuration, TotalCharge]
+ServiceInvoice [InvoiceNo (PK), CustNo (FK), InvoiceDate, TeamNo (FK), Subtotal, GST, PST, TotalDue]
+Customer [CustNo (PK), CustName, Address, City, PostalCode]
+Services [InvoiceNo (PKFK), ServiceCode(PKFK), WorkDuration, TotalCharge]
 ServiceMethod [ServiceCode (PK), ServiceDesc, HourlyCharge]
-Equipments [InvoiceNo(PKFK), EquipUsed(PK)]
+Equipments [InvoiceNo (PKFK), EquipUsed(PK)]
 Team [TeamNo(PK), TeamDesc]
-Employees [EmpID (PK), TeamNo (FK), Name, Position, Home Phone, StartDate]
-Skills [EmpID (PK), Skill (PK)]
-ProductInvoice [InvoiceID(PK), invoiceDate, custNo (FK), EmpID (FK)]
-Product [ProdID(PK), ProdClass (FK), ProductName, Desc, Cost, Markup, Charge, Inventory, Aisle, Supplier (FK)]
+Employees [EmpID (PK), TeamNo (FK), Name, Position, OHIP, HomePhone, StartDate]
+Skills [EmpID (PKFK), Skill (PK)]
+ProductInvoice [InvoiceID(PK), InvoiceDate, CustNo (FK), EmpID (FK)]
+Product [ProdID(PK), ProductClass (FK), ProductName, Desc, Cost, Markup, Charge, Inventory, Aisle, SupplierID (FK)]
 Sales [InvoiceID (PKFK), ProdID(PKFK), Qty]
 ProdClassification [ProductClass(PK), Classification]
-Supplier [Supplier(PK)]
-
-
+Supplier [SupplierID(PK), SupplierName]
