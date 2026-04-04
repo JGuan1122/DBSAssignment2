@@ -73,4 +73,19 @@ Report [ProductID(PK), ProductClass, Classification, ProductID, Desc, Cost, Mark
 
 3NF:
 Report [ProductID(PK), ProductClass(FK), ProductID, Desc, Cost, Markup, Charge]
-ProdClassification [ProductClass(PK), Classification,
+ProdClassification [ProductClass(PK), Classification]
+
+User view 5
+
+UNF:
+Inventory [ProdID, Desc, Inventory, Aisle, Supplier]
+
+1NF:
+Inventory [ProdID(PK), Desc, Inventory, Aisle, Supplier]
+
+2NF:
+Inventory [ProdID(PK), Desc, Inventory, Aisle, Supplier]
+
+3NF:
+Inventory [ProdID(PK), Desc, Inventory, Aisle, Supplier(FK)]
+Supplier [Supplier(PK)]
