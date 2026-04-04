@@ -92,7 +92,9 @@ Supplier [Supplier(PK)]
 
 
 
+I realized there are redundancies. Merging report, product, and inventory together since they have the same primary key of ProdID.
 
+this way, we can just select different columns of product table for views and such.
 
 Total:
 
@@ -105,9 +107,9 @@ Team [TeamNo(PK), TeamDesc]
 Employees [EmpID (PK), TeamNo (FK), Name, Position, Home Phone, StartDate]
 Skills [EmpID (PK), Skill (PK)]
 ProductInvoice [InvoiceID(PK), invoiceDate, custNo (FK), EmpID (FK)]
-Product[ProdID(PK), ProdClass, ProductName, Charge]
+Product [ProdID(PK), ProdClass (FK), ProductName, Desc, Cost, Markup, Charge, Inventory, Aisle, Supplier (FK)]
 Sales [InvoiceID (PKFK), ProdID(PKFK), Qty]
-Report [ProductID(PK), ProductClass(FK), ProductID, Desc, Cost, Markup, Charge]
 ProdClassification [ProductClass(PK), Classification]
-Inventory [ProdID(PK), Desc, Inventory, Aisle, Supplier(FK)]
 Supplier [Supplier(PK)]
+
+
