@@ -1,0 +1,76 @@
+1NF repeating groups
+2NF partial dependency
+3NF transitive dependency
+
+User view 1
+
+UNF:
+Invoice [InvoiceNo, InvoiceDate, TeamNo, CustNo, CustName, Address, City, Postal code, Subtotal, GST, PST, TotalDue, (EquipUsed, ServiceCode, 
+                                                        ServiceDesc, HourCharge, WorkDuration), Total]
+
+1NF:
+Invoice [InvoiceNo (PK), InvoiceDate, TeamNo, CustNo, CustName, Address, City, Postalcode, Subtotal, GST, PST, Total]
+Services [InvoiceNo (PKFK), ServiceCode(PK), ServiceDesc, HourlyCharge, WorkDuration, TotalCharge]
+Equipments [InvoiceNo(PKFK), EquipUsed(PK)]
+
+2NF:
+Invoice [InvoiceNo (PK), CustNo (FK), InvoiceDate, TeamNo, Subtotal, GST, PST, Total]
+Customer [CustNo (PK), CustName, Address, City, Postalcode]
+Services [InvoiceNo (PKFK), ServiceCode(PK), WorkDuration, TotalCharge]
+ServiceMethod [ServiceCode (PK), ServiceDesc, HourlyCharge]
+Equipments [InvoiceNo(PKFK), EquipUsed(PK)]
+
+3NF: the same.
+
+User view 2
+
+UNF:
+EmployeeTeam [TeamNo, TeamDesc, (Position, EmpName, EmpID, OHIP, HomePhone, StartDate, Skills)]
+
+1NF:
+Team [TeamNo(PK), TeamDesc]
+Employees [EmpID (PK), TeamNo (FK), Name, Position, Home Phone, StartDate]
+Skills [EmpID (PK), Skill (PK)]
+
+2NF: 
+Team [TeamNo(PK), TeamDesc]
+Employees [EmpID (PK), TeamNo (FK), Name, Position, Home Phone, StartDate]
+Skills [EmpID (PK), Skill (PK)]
+
+3NF:
+Team [TeamNo(PK), TeamDesc]
+Employees [EmpID (PK), TeamNo (FK), Name, Position, Home Phone, StartDate]
+Skills [EmpID (PK), Skill (PK)]
+
+User view 3
+UNF:
+Sales [ProdClass, ProdID, Product, Charge, Qty, InvoiceID, InvoiceDate, SalesAssistant, SalesAssistantName, CustNo]
+
+1NF:
+Sales [ProdClass(PK), ProdID(PK), Product, Charge, Qty, InvoiceID, InvoiceDate, SalesAssistant, SalesAssistantName, CustNo]
+
+2NF:
+Invoice [InvoiceID(PK), invoiceDate, custNo, SalesAssistantID, SalesAssistantName]
+Product[ProdID(PK), ProdClass, ProductName, Charge]
+Sales [InvoiceID (PKFK), ProdID(PKFK), Qty]
+
+3NF:
+Invoice [InvoiceID(PK), invoiceDate, custNo]
+SalesAssistant [SalesAssistantID(PK), SalesAssistantName]
+Product[ProdID(PK), ProdClass, ProductName, Charge]
+Sales [InvoiceID (PKFK), ProdID(PKFK), Qty]
+
+User view 4
+
+UNF:
+Report [ProductClass, Classification, ProductID, Desc, Cost, Markup, Charge]
+
+1NF:
+Report [ProductID(PK), ProductClass, Classification, Desc, Cost, Markup, Charge]
+
+2NF:
+Report [ProductID(PK), ProductClass, Classification, ProductID, Desc, Cost, Markup, Charge]
+
+3NF:
+Report [ProductID(PK), ProductClass(FK), ProductID, Desc, Cost, Markup, Charge]
+ProdClassification [ProductClass(PK), Classification,
